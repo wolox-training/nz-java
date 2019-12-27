@@ -1,16 +1,27 @@
 package wolox.training.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import wolox.training.exceptions.BookNotFoundException;
+import wolox.training.models.Book;
+import wolox.training.repositories.BookRepository;
 
-@Controller
+@RestController
+@RequestMapping("/api/books")
 public class BookController {
 
-  @GetMapping("/greeting")
-  public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-    model.addAttribute("name", name);
-    return "greeting";
+  @Autowired
+  private BookRepository bookRepository;
+
+  @GetMapping("/{id}")
+  public Book findOne(@PathVariable Long id) {
+    return bookRepository.findById(id)
+        .orElseThrow(BookNotFoundException::new);
   }
 }
