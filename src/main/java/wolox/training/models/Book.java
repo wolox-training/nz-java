@@ -37,12 +37,20 @@ public class Book {
   @Column(nullable = false)
   private String isbn;
 
-  public long getId() {
-    return id;
+  public Book(String genre, String author, String image, String title, String publisher,
+      String year, Integer pages, String isbn) {
+    this.genre = genre;
+    this.author = author;
+    this.image = image;
+    this.title = title;
+    this.publisher = publisher;
+    this.year = year;
+    this.pages = pages;
+    this.isbn = isbn;
   }
 
-  public void setId(long id) {
-    this.id = id;
+  public long getId() {
+    return id;
   }
 
   public String getGenre() {
