@@ -13,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import wolox.training.exceptions.BookAlreadyOwnedException;
 
 @Entity
 @NoArgsConstructor
@@ -38,6 +39,14 @@ public class User {
   @NotBlank
   @Setter
   private List<Book> books;
+
+  public void addBook(Book book) throws BookAlreadyOwnedException {
+    if(this.books.contains(book)) {
+      throw new BookAlreadyOwnedException();
+    } else {
+      this.books.add(book);
+    }
+  }
 
   public List<Book> getBooks() {
     return (List<Book>) Collections.unmodifiableList(books);
