@@ -1,5 +1,6 @@
 package wolox.training.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -38,8 +39,7 @@ public class User {
   private LocalDate birthDate;
 
   @OneToMany(mappedBy = "user")
-  @NotBlank
-  @Setter
+  @Setter @JsonIgnore
   private List<Book> books;
 
   public void addBook(Book book) throws BookAlreadyOwnedException {
