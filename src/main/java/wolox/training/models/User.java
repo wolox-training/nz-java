@@ -43,10 +43,10 @@ public class User {
   private List<Book> books;
 
   public void addBook(Book book) throws BookAlreadyOwnedException {
-    if(this.books.contains(book)) {
+    if(books.contains(book)) {
       throw new BookAlreadyOwnedException();
     } else {
-      this.books.add(book);
+      books.add(book);
     }
   }
 
