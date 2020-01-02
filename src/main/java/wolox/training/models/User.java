@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import wolox.training.exceptions.BookAlreadyOwnedException;
+import wolox.training.exceptions.BookNotFoundException;
 
 @Entity
 @Table(name = "users", schema = "public")
@@ -47,6 +48,14 @@ public class User {
       throw new BookAlreadyOwnedException();
     } else {
       this.books.add(book);
+    }
+  }
+
+  public void removeBook(Book book) {
+    if(!this.books.contains(book)) {
+      throw new BookNotFoundException();
+    } else {
+      this.books.remove(book);
     }
   }
 
