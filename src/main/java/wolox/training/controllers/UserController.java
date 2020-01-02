@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import wolox.training.exceptions.BookAlreadyOwnedException;
+import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.exceptions.UserIdMismatchException;
 import wolox.training.exceptions.UserNotFoundException;
+import wolox.training.models.Book;
 import wolox.training.models.User;
+import wolox.training.repositories.BookRepository;
 import wolox.training.repositories.UserRepository;
 
 @RestController
@@ -22,6 +26,9 @@ public class UserController {
 
   @Autowired
   private UserRepository userRepository;
+
+  @Autowired
+  private BookRepository bookRepository;
 
   @GetMapping("/{id}")
   public User findOne(@PathVariable Long id) {
@@ -50,6 +57,20 @@ public class UserController {
     }
     userRepository.findById(id)
         .orElseThrow(UserNotFoundException::new);
+    return userRepository.save(user);
+  }
+
+  @PutMapping("/{id}/books/{bookId}")
+  public User addBook(@PathVariable Long id, @PathVariable Long bookId)
+      throws BookAlreadyOwnedException, BookNotFoundException {
+
+    Book book = bookRepository.findById(bookId)
+        .orElseThrow(BookNotFoundException::new);
+
+    User user = userRepository.findById(id)
+        .orElseThrow(UserNotFoundException::new);
+
+    user.addBook(book);
     return userRepository.save(user);
   }
 }

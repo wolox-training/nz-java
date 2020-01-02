@@ -39,7 +39,7 @@ public class User {
   private LocalDate birthDate;
 
   @OneToMany(mappedBy = "user")
-  @Setter @JsonIgnore
+  @Setter
   private List<Book> books;
 
   public void addBook(Book book) throws BookAlreadyOwnedException {
