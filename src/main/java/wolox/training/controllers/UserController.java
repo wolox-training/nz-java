@@ -72,6 +72,20 @@ public class UserController {
 
     user.addBook(book);
 
+    return userRepository.save(user);
+  }
+
+  @DeleteMapping("/{id}/books/{bookId}")
+  public User removeBook(@PathVariable Long id, @PathVariable Long bookId)
+      throws BookNotFoundException, BookAlreadyOwnedException {
+
+    Book book = bookRepository.findById(bookId)
+        .orElseThrow(BookNotFoundException::new);
+
+    User user = userRepository.findById(id)
+        .orElseThrow(UserNotFoundException::new);
+
+    user.removeBook(book);
 
     return userRepository.save(user);
   }
