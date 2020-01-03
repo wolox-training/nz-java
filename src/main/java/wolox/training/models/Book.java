@@ -1,5 +1,6 @@
 package wolox.training.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,7 +45,8 @@ public class Book {
   private String isbn;
 
   @ManyToOne
-  @JoinColumn(name="users_id")
+  @JsonBackReference
+  @JoinColumn(name = "user_id")
   @Getter @Setter
   private User user;
 

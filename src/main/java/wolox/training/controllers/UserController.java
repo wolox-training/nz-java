@@ -62,7 +62,7 @@ public class UserController {
 
   @PutMapping("/{id}/books/{bookId}")
   public User addBook(@PathVariable Long id, @PathVariable Long bookId)
-      throws BookAlreadyOwnedException, BookNotFoundException {
+      throws BookAlreadyOwnedException, BookNotFoundException, BookAlreadyOwnedException {
 
     Book book = bookRepository.findById(bookId)
         .orElseThrow(BookNotFoundException::new);
@@ -71,6 +71,8 @@ public class UserController {
         .orElseThrow(UserNotFoundException::new);
 
     user.addBook(book);
+
+
     return userRepository.save(user);
   }
 }
