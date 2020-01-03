@@ -1,7 +1,7 @@
 package wolox.training.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
@@ -14,13 +14,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import wolox.training.constants.PreconditionsConstants;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 
 @Entity
@@ -35,17 +34,17 @@ public class User {
 
   @Column(nullable = false)
   @ApiModelProperty(notes = "The user username, identifies a user by it's username")
-  @Getter @Setter
+  @Getter
   private String username;
 
   @Column(nullable = false)
   @ApiModelProperty(notes = "The user name")
-  @Getter @Setter
+  @Getter
   private String name;
 
   @Column(nullable = false)
   @ApiModelProperty(notes = "The user birth date")
-  @Getter @Setter
+  @Getter
   private LocalDate birthDate;
 
   @OneToMany(cascade = CascadeType.ALL)
@@ -71,5 +70,21 @@ public class User {
 
   public List<Book> getBooks() {
     return (List<Book>) Collections.unmodifiableList(books);
+  }
+
+
+  public void setBirthDate(LocalDate birthDate) {
+    Preconditions.checkNotNull(birthDate, PreconditionsConstants.NOT_NULL_MESSAGE, "birth date");
+    this.birthDate = birthDate;
+  }
+
+  public void setName(String name) {
+    Preconditions.checkNotNull(name, PreconditionsConstants.NOT_NULL_MESSAGE, "name");
+    this.name = name;
+  }
+
+  public void setUsername(String username) {
+    Preconditions.checkNotNull(username, PreconditionsConstants.NOT_NULL_MESSAGE, "username");
+    this.username = username;
   }
 }
