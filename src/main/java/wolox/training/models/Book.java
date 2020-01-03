@@ -1,6 +1,7 @@
 package wolox.training.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.google.common.base.Preconditions;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import wolox.training.constants.PreconditionsConstants;
 
 @Entity
 public class Book {
@@ -71,6 +73,7 @@ public class Book {
   }
 
   public void setAuthor(String author) {
+    Preconditions.checkNotNull(author,PreconditionsConstants.NOT_NULL_MESSAGE, "author");
     this.author = author;
   }
 
@@ -79,6 +82,7 @@ public class Book {
   }
 
   public void setImage(String image) {
+    Preconditions.checkNotNull(image,PreconditionsConstants.NOT_NULL_MESSAGE, "image");
     this.image = image;
   }
 
@@ -87,6 +91,7 @@ public class Book {
   }
 
   public void setTitle(String title) {
+    Preconditions.checkNotNull(title,PreconditionsConstants.NOT_NULL_MESSAGE, "title");
     this.title = title;
   }
 
@@ -95,6 +100,7 @@ public class Book {
   }
 
   public void setPublisher(String publisher) {
+    Preconditions.checkNotNull(publisher,PreconditionsConstants.NOT_NULL_MESSAGE, "publisher");
     this.publisher = publisher;
   }
 
@@ -103,6 +109,7 @@ public class Book {
   }
 
   public void setYear(String year) {
+    Preconditions.checkNotNull(year,PreconditionsConstants.NOT_NULL_MESSAGE, "year");
     this.year = year;
   }
 
@@ -111,6 +118,7 @@ public class Book {
   }
 
   public void setPages(Integer pages) {
+    Preconditions.checkNotNull(pages,PreconditionsConstants.NOT_NULL_MESSAGE, "pages");
     this.pages = pages;
   }
 
@@ -119,6 +127,7 @@ public class Book {
   }
 
   public void setIsbn(String isbn) {
+    Preconditions.checkNotNull(isbn,PreconditionsConstants.NOT_NULL_MESSAGE, "isbn");
     this.isbn = isbn;
   }
 }
