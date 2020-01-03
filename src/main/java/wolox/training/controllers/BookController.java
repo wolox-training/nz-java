@@ -1,5 +1,10 @@
 package wolox.training.controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,13 +23,19 @@ import wolox.training.repositories.BookRepository;
 
 @RestController
 @RequestMapping("/api/books")
+@Api
 public class BookController {
 
   @Autowired
   private BookRepository bookRepository;
 
+  @ApiOperation(value = "Given an Id returns a Book", response = Book.class)
+  @ApiResponses(value={
+      @ApiResponse(code=200, message = "Succesfully retrieve book"),
+      @ApiResponse(code=404, message = "Book not found")
+  })
   @GetMapping("/{id}")
-  public Book findOne(@PathVariable Long id) {
+  public Book findOne(@ApiParam(value = "Id to find the book", required = true) @PathVariable Long id) {
     return bookRepository.findById(id)
         .orElseThrow(BookNotFoundException::new);
   }
