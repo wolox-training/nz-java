@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -39,8 +42,9 @@ public class User {
   @Getter @Setter
   private LocalDate birthDate;
 
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "users_id")
   @JsonManagedReference
-  @OneToMany(mappedBy = "user")
   @Setter
   private List<Book> books;
 
@@ -48,9 +52,14 @@ public class User {
     if(books.contains(book)) {
       throw new BookAlreadyOwnedException();
     } else {
-      book.setUser(this);
       books.add(book);
     }
+  }
+
+  public void removeBook(Book book) {
+    this.books.removeIf(
+        associatedBook->associatedBook.getId() == book.getId()
+    );
   }
 
   public List<Book> getBooks() {
