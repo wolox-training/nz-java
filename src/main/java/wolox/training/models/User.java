@@ -2,6 +2,8 @@ package wolox.training.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +24,7 @@ import lombok.Setter;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 
 @Entity
+@ApiModel(description = "User model in the WBooks API")
 @Table(name = "users", schema = "public")
 @NoArgsConstructor
 public class User {
@@ -31,18 +34,22 @@ public class User {
   private long id;
 
   @Column(nullable = false)
+  @ApiModelProperty(notes = "The user username, identifies a user by it's username")
   @Getter @Setter
   private String username;
 
   @Column(nullable = false)
+  @ApiModelProperty(notes = "The user name")
   @Getter @Setter
   private String name;
 
   @Column(nullable = false)
+  @ApiModelProperty(notes = "The user birth date")
   @Getter @Setter
   private LocalDate birthDate;
 
   @OneToMany(cascade = CascadeType.ALL)
+  @ApiModelProperty(notes = "The user's rent books")
   @JoinColumn(name = "users_id")
   @JsonManagedReference
   @Setter
