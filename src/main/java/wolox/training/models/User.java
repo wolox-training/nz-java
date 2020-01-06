@@ -1,6 +1,7 @@
 package wolox.training.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import wolox.training.constants.PreconditionsConstants;
 import wolox.training.constants.swagger.models.UserConstants;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 
@@ -69,5 +71,18 @@ public class User {
 
   public List<Book> getBooks() {
     return (List<Book>) Collections.unmodifiableList(books);
+  }
+
+
+  public void setBirthDate(LocalDate birthDate) {
+    this.birthDate = Preconditions.checkNotNull(birthDate, PreconditionsConstants.NOT_NULL_MESSAGE, "birth date");
+  }
+
+  public void setName(String name) {
+    this.name = Preconditions.checkNotNull(name, PreconditionsConstants.NOT_NULL_MESSAGE, "name");
+  }
+
+  public void setUsername(String username) {
+    this.username = Preconditions.checkNotNull(username, PreconditionsConstants.NOT_NULL_MESSAGE, "username");
   }
 }
