@@ -75,17 +75,14 @@ public class User {
 
 
   public void setBirthDate(LocalDate birthDate) {
-    Preconditions.checkNotNull(birthDate, PreconditionsConstants.NOT_NULL_MESSAGE, "birth date");
-    this.birthDate = birthDate;
+    this.birthDate = Preconditions.checkNotNull(birthDate, PreconditionsConstants.NOT_NULL_MESSAGE, "birth date");
   }
 
   public void setName(String name) {
-    Preconditions.checkNotNull(name, PreconditionsConstants.NOT_NULL_MESSAGE, "name");
-    this.name = name;
+    this.name = Preconditions.checkNotNull(name, PreconditionsConstants.NOT_NULL_MESSAGE, "name");
   }
 
   public void setUsername(String username) {
-    Preconditions.checkNotNull(username, PreconditionsConstants.NOT_NULL_MESSAGE, "username");
-    this.username = username;
+    this.username = Preconditions.checkNotNull(username, PreconditionsConstants.NOT_NULL_MESSAGE, "username");
   }
 }
