@@ -63,6 +63,8 @@ public class Book {
     this.setIsbn(isbn);
   }
 
+  public Book(){};
+
   public long getId() {
     return id;
   }

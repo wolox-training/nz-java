@@ -27,4 +27,9 @@ public class BookFactory {
         this.pages,
         this.isbn);
   };
+
+  public BookFactory title(String title) {
+    this.title = title;
+    return this;
+  }
 }
