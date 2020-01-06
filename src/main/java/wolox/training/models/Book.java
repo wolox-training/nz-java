@@ -5,13 +5,11 @@ import com.google.common.base.Preconditions;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import wolox.training.constants.PreconditionsConstants;
@@ -53,7 +51,16 @@ public class Book {
   @Getter @Setter
   private User users;
 
-  public Book() {
+  public Book(String genre, String author, String image, String title, String publisher,
+      String year, Integer pages, String isbn) {
+    this.setGenre(genre);
+    this.setAuthor(author);
+    this.setImage(image);
+    this.setTitle(title);
+    this.setPublisher(publisher);
+    this.setYear(year);
+    this.setPages(pages);
+    this.setIsbn(isbn);
   }
 
   public long getId() {
