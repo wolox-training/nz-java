@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import wolox.training.exceptions.BookIdMismatchException;
@@ -38,6 +41,11 @@ public class BookController {
   public Book findOne(@ApiParam(value = "Id to find the book", required = true) @PathVariable Long id) {
     return bookRepository.findById(id)
         .orElseThrow(BookNotFoundException::new);
+  }
+
+  @GetMapping()
+  public List<Book> allBooks(@RequestParam Map<String,String> allParam) {
+    return bookRepository.findAll();
   }
 
   @PostMapping
