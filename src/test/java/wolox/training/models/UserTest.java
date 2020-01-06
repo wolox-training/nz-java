@@ -30,14 +30,16 @@ public class UserTest {
 
   private User user;
   private Book book1;
+  private BookFactory bookFactory = new BookFactory();
+  private UserFactory userFactory = new UserFactory();
 
   @Before
   public void setUp() {
-    user = new UserFactory().build();
-    book1 = new BookFactory().build();
+    user = userFactory.build();
+    book1 = bookFactory.build();
 
     user.addBook(book1);
-    
+
     entityManager.persist(user);
     entityManager.flush();
   }
@@ -78,6 +80,17 @@ public class UserTest {
     userRepository.save(user);
   }
 
+  @Test
+  public void whenAddingANewBook_thenUserIsUpdatedInDb() {
+    user.addBook(bookFactory.build());
+    entityManager.persist(user);
+    entityManager.flush();
+
+    User persistedUser = userRepository.findByName(user.getName()).get();
+
+    assertThat(persistedUser.getBooks().size()).isEqualTo(2);
+  }
+
   @Test(expected = BookAlreadyOwnedException.class)
   public void whenAddingAnAlreadyAddedBook_thenThrowException() {
     user.addBook(book1);
@@ -104,6 +117,4 @@ public class UserTest {
         found.isEmpty()
     ).isTrue();
   }
-
-
 }
