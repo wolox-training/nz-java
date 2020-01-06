@@ -24,26 +24,6 @@ public class UserFactory {
       .toLocalDate();
   private List<Book> books = new ArrayList<Book>();
 
-  public UserFactory username(String username) {
-    this.username = username;
-    return this;
-  };
-
-  public UserFactory name(String name) {
-    this.name = name;
-    return this;
-  };
-
-  public UserFactory birthDate(LocalDate birthDate) {
-    this.birthDate = birthDate;
-    return this;
-  };
-
-  public UserFactory books(List<Book> birthDate) {
-    this.books = books;
-    return this;
-  };
-
   public User build() {
     return new User(this.username, this.name, this.birthDate, this.books);
   }
