@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import wolox.training.constants.ExceptionsConstants;
+import wolox.training.constants.swagger.controllers.BookControllerConstants;
 import wolox.training.exceptions.BookIdMismatchException;
 import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
@@ -29,13 +31,13 @@ public class BookController {
   @Autowired
   private BookRepository bookRepository;
 
-  @ApiOperation(value = "Given an Id returns a Book", response = Book.class)
+  @ApiOperation(value = BookControllerConstants.SHOW_DESCRIPTION, response = Book.class)
   @ApiResponses(value={
-      @ApiResponse(code=200, message = "Succesfully retrieve book"),
-      @ApiResponse(code=404, message = "Book not found")
+      @ApiResponse(code=200, message = BookControllerConstants.SUCCESSFUL_SHOW_RESPONSE),
+      @ApiResponse(code=404, message = ExceptionsConstants.BOOK_NOT_FOUND)
   })
   @GetMapping("/{id}")
-  public Book findOne(@ApiParam(value = "Id to find the book", required = true) @PathVariable Long id) {
+  public Book findOne(@ApiParam(value = BookControllerConstants.ID_DESCRIPTION, required = true) @PathVariable Long id) {
     return bookRepository.findById(id)
         .orElseThrow(BookNotFoundException::new);
   }
