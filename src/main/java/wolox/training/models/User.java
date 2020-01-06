@@ -1,6 +1,5 @@
 package wolox.training.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,17 +13,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import wolox.training.constants.swagger.models.UserConstants;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 
 @Entity
-@ApiModel(description = "User model in the WBooks API")
+@ApiModel(description = UserConstants.MODEL_DESCRIPTION)
 @Table(name = "users", schema = "public")
 @NoArgsConstructor
 public class User {
@@ -34,22 +32,22 @@ public class User {
   private long id;
 
   @Column(nullable = false)
-  @ApiModelProperty(notes = "The user username, identifies a user by it's username")
+  @ApiModelProperty(notes = UserConstants.USERNAME_DESCRIPTION)
   @Getter @Setter
   private String username;
 
   @Column(nullable = false)
-  @ApiModelProperty(notes = "The user name")
+  @ApiModelProperty(notes = UserConstants.NAME_DESCRIPTION)
   @Getter @Setter
   private String name;
 
   @Column(nullable = false)
-  @ApiModelProperty(notes = "The user birth date")
+  @ApiModelProperty(notes = UserConstants.BIRTH_DATE_DESCRIPTION)
   @Getter @Setter
   private LocalDate birthDate;
 
   @OneToMany(cascade = CascadeType.ALL)
-  @ApiModelProperty(notes = "The user's rent books")
+  @ApiModelProperty(notes = UserConstants.BOOKS_DESCRIPTION)
   @JoinColumn(name = "users_id")
   @JsonManagedReference
   @Setter
@@ -65,7 +63,7 @@ public class User {
 
   public void removeBook(Book book) {
     this.books.removeIf(
-        associatedBook->associatedBook.getId() == book.getId()
+        associatedBook -> associatedBook.getId() == book.getId()
     );
   }
 
