@@ -38,17 +38,17 @@ public class User {
 
   @Column(nullable = false)
   @ApiModelProperty(notes = UserConstants.USERNAME_DESCRIPTION)
-  @Getter @Setter
+  @Getter
   private String username;
 
   @Column(nullable = false)
   @ApiModelProperty(notes = UserConstants.NAME_DESCRIPTION)
-  @Getter @Setter
+  @Getter
   private String name;
 
   @Column(nullable = false)
   @ApiModelProperty(notes = UserConstants.BIRTH_DATE_DESCRIPTION)
-  @Getter @Setter
+  @Getter
   private LocalDate birthDate;
 
   @OneToMany(cascade = CascadeType.ALL)
@@ -57,6 +57,13 @@ public class User {
   @JsonManagedReference
   @Setter
   private List<Book> books;
+
+  public User(String username, String name, LocalDate birthDate, List<Book> books) {
+    this.setUsername(username);
+    this.setName(name);
+    this.setBirthDate(birthDate);
+    this.setBooks(books);
+  }
 
   public void addBook(Book book) throws BookAlreadyOwnedException {
     if(books.contains(book)) {
