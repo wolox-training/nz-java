@@ -1,14 +1,20 @@
 package wolox.training.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +22,7 @@ import lombok.Setter;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 
 @Entity
+@Table(name = "users", schema = "public")
 @NoArgsConstructor
 public class User {
   @Id
@@ -35,16 +42,17 @@ public class User {
   @Getter @Setter
   private LocalDate birthDate;
 
-  @OneToMany(mappedBy = "user")
-  @NotBlank
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "users_id")
+  @JsonManagedReference
   @Setter
   private List<Book> books;
 
   public void addBook(Book book) throws BookAlreadyOwnedException {
-    if(this.books.contains(book)) {
+    if(books.contains(book)) {
       throw new BookAlreadyOwnedException();
     } else {
-      this.books.add(book);
+      books.add(book);
     }
   }
 

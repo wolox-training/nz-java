@@ -1,12 +1,16 @@
 package wolox.training.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,10 +45,11 @@ public class Book {
   @Column(nullable = false)
   private String isbn;
 
-  @ManyToOne
-  @JoinColumn(name="user_id")
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "users_id")
+  @JsonBackReference
   @Getter @Setter
-  private User user;
+  private User users;
 
   public Book() {
   }
