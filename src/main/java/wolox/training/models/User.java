@@ -19,11 +19,15 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+<<<<<<< HEAD
 import wolox.training.constants.PreconditionsConstants;
+=======
+import wolox.training.constants.swagger.models.UserConstants;
+>>>>>>> Swagger in API models
 import wolox.training.exceptions.BookAlreadyOwnedException;
 
 @Entity
-@ApiModel(description = "User model in the WBooks API")
+@ApiModel(description = UserConstants.MODEL_DESCRIPTION)
 @Table(name = "users", schema = "public")
 @NoArgsConstructor
 public class User {
@@ -33,22 +37,22 @@ public class User {
   private long id;
 
   @Column(nullable = false)
-  @ApiModelProperty(notes = "The user username, identifies a user by it's username")
-  @Getter
+  @ApiModelProperty(notes = UserConstants.USERNAME_DESCRIPTION)
+  @Getter @Setter
   private String username;
 
   @Column(nullable = false)
-  @ApiModelProperty(notes = "The user name")
-  @Getter
+  @ApiModelProperty(notes = UserConstants.NAME_DESCRIPTION)
+  @Getter @Setter
   private String name;
 
   @Column(nullable = false)
-  @ApiModelProperty(notes = "The user birth date")
-  @Getter
+  @ApiModelProperty(notes = UserConstants.BIRTH_DATE_DESCRIPTION)
+  @Getter @Setter
   private LocalDate birthDate;
 
   @OneToMany(cascade = CascadeType.ALL)
-  @ApiModelProperty(notes = "The user's rent books")
+  @ApiModelProperty(notes = UserConstants.BOOKS_DESCRIPTION)
   @JoinColumn(name = "users_id")
   @JsonManagedReference
   @Setter
@@ -64,7 +68,7 @@ public class User {
 
   public void removeBook(Book book) {
     this.books.removeIf(
-        associatedBook->associatedBook.getId() == book.getId()
+        associatedBook -> associatedBook.getId() == book.getId()
     );
   }
 
