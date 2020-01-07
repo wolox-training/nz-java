@@ -118,7 +118,7 @@ public class BookTest {
   }
 
   @Test
-  public void whenFindByAuthor_thenReturnNull() {
+  public void whenFindByAuthorWithUnknownAuthor_thenReturnNull() {
     // when
     Optional<Book> found = bookRepository.findByAuthor("pepe");
 
