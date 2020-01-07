@@ -1,6 +1,7 @@
 package wolox.training.support.factories;
 
 import com.github.javafaker.Faker;
+import com.github.javafaker.Name;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -26,6 +27,21 @@ public class UserFactory {
 
   public User build() {
     return new User(this.username, this.name, this.birthDate, this.books);
+  }
+
+  public UserFactory name(String name) {
+    this.name = name;
+    return this;
+  }
+
+  public UserFactory username(String username) {
+    this.username = username;
+    return this;
+  }
+
+  public UserFactory birthDate(LocalDate birthDate) {
+    this.birthDate = birthDate;
+    return this;
   }
 
 }
