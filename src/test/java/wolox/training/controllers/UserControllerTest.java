@@ -1,6 +1,6 @@
 package wolox.training.controllers;
 
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -9,26 +9,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import wolox.training.models.Book;
 import wolox.training.models.User;
 import wolox.training.repositories.BookRepository;
@@ -178,14 +172,54 @@ public class UserControllerTest {
 
     mvc.perform(put(url).contentType(MediaType.APPLICATION_JSON)).andDo(print())
         .andExpect(status().isOk())
-        .andExpect(
-            jsonPath("$.books").value("[{\"id\":0,\"genre\":\"Fantasia\","
-                + "\"author\":\"J.K. Rowling\",\"image\":\"shorturl.at\\/aCFR8\",\"title\":\""
-                + "Harry Potter y la piedra filosofal\",\"publisher\":\"Penguin\",\"year\":"
-                + "\"1998\",\"pages\":310,\"isbn\":\"9788700631625\"},{\"id\":0,\"genre\":\"Fantasia\","
-                + "\"author\":\"J.K. Rowling\",\"image\":\"shorturl.at\\/aCFR7\",\"title\":\""
-                + "Harry Potter y la camara de los secretos\",\"publisher\":\"Penguin\",\"year\":"
-                + "\"1999\",\"pages\":500,\"isbn\":\"9788700631225\"}]")
-        );
+        .andExpect(jsonPath("$.books", hasSize(2)))
+        .andExpect(jsonPath("$.books[0].title").value("Harry Potter y"
+            + " la piedra filosofal"))
+        .andExpect(jsonPath("$.books[1].title").value("Harry Potter y"
+            + " la camara de los secretos"));
+  }
+
+  @Test
+  public void whenAddingExistingBook_thenExceptionIsThrown() throws Exception {
+    when(mockUserRepository.findById(1L))
+        .thenReturn(Optional.ofNullable(user));
+    when(mockBookRepository.findById(1L))
+        .thenReturn(Optional.ofNullable(book));
+    when(mockUserRepository.save(user))
+        .thenReturn(user);
+
+    String url = ("/api/users/1/books/1");
+
+    mvc.perform(put(url).contentType(MediaType.APPLICATION_JSON)).andDo(print())
+        .andExpect(status().is4xxClientError());
+  }
+
+  @Test
+  public void whenRemovingBook_thenBookIsRemoved() throws Exception {
+    when(mockUserRepository.findById(1L))
+        .thenReturn(Optional.ofNullable(user));
+    when(mockBookRepository.findById(1L))
+        .thenReturn(Optional.ofNullable(book));
+    when(mockUserRepository.save(user))
+        .thenReturn(user);
+
+    String url = ("/api/users/1/books/1");
+
+    mvc.perform(delete(url).contentType(MediaType.APPLICATION_JSON)).andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.books", hasSize(0)));
+  }
+
+  @Test
+  public void whenRemovingANotPersistedBook_thenExceptionIsThrown() throws Exception {
+    when(mockUserRepository.findById(1L))
+        .thenReturn(Optional.ofNullable(user));
+    when(mockUserRepository.save(user))
+        .thenReturn(user);
+
+    String url = ("/api/users/1/books/100");
+
+    mvc.perform(delete(url).contentType(MediaType.APPLICATION_JSON)).andDo(print())
+        .andExpect(status().is4xxClientError());
   }
 }
