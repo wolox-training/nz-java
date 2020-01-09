@@ -29,7 +29,7 @@ public class UserAuthProvider implements AuthenticationProvider {
     String username = authentication.getName();
     String password = authentication.getCredentials().toString();
 
-    User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);;
+    User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
 
     if (passwordEncoder.matches(password, user.getPassword())) {
       return new UsernamePasswordAuthenticationToken(
