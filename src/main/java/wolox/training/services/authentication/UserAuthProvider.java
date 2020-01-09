@@ -26,14 +26,14 @@ public class UserAuthProvider implements AuthenticationProvider {
   public Authentication authenticate(Authentication authentication)
       throws AuthenticationException {
 
-    String name = authentication.getName();
+    String username = authentication.getName();
     String password = authentication.getCredentials().toString();
 
-    User user = userRepository.findByName(name).orElseThrow(UserNotFoundException::new);;
+    User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);;
 
     if (passwordEncoder.matches(password, user.getPassword())) {
       return new UsernamePasswordAuthenticationToken(
-          name, password, new ArrayList<>());
+          username, password, new ArrayList<>());
     } else {
       return null;
     }

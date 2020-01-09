@@ -8,4 +8,5 @@ import wolox.training.models.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
   public Optional<User> findByName(String name);
+  public Optional<User> findByUsername(String username);
 }
