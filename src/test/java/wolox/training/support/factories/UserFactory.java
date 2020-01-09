@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import wolox.training.models.Book;
 import wolox.training.models.User;
 
@@ -24,9 +27,15 @@ public class UserFactory {
       )
       .toLocalDate();
   private List<Book> books = new ArrayList<Book>();
+  private String password = "1234567890";
 
   public User build() {
-    return new User(this.username, this.name, this.birthDate, this.books);
+    return new User(
+        this.username,
+        this.name,
+        this.birthDate,
+        this.books,
+        this.password);
   }
 
   public UserFactory name(String name) {
@@ -44,4 +53,8 @@ public class UserFactory {
     return this;
   }
 
+  public UserFactory password(String password) {
+    this.password = password;
+    return this;
+  }
 }

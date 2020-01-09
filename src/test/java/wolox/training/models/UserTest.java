@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import wolox.training.exceptions.BookAlreadyOwnedException;
+import wolox.training.repositories.BookRepository;
 import wolox.training.repositories.UserRepository;
 import wolox.training.support.factories.BookFactory;
 import wolox.training.support.factories.UserFactory;
@@ -28,6 +30,12 @@ public class UserTest {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private BookRepository bookRepository;
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
   private User user;
   private Book book1;
   private BookFactory bookFactory = new BookFactory();
@@ -35,7 +43,9 @@ public class UserTest {
 
   @Before
   public void setUp() {
-    user = userFactory.build();
+    user = userFactory
+        .password(passwordEncoder.encode("1234567890"))
+        .build();
     book1 = bookFactory.build();
 
     user.addBook(book1);

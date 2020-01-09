@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import wolox.training.constants.PreconditionsConstants;
 import wolox.training.constants.swagger.models.UserConstants;
 import wolox.training.exceptions.BookAlreadyOwnedException;
@@ -29,6 +31,7 @@ import wolox.training.exceptions.BookAlreadyOwnedException;
 @Table(name = "users", schema = "public")
 @NoArgsConstructor
 public class User {
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Getter
@@ -61,11 +64,12 @@ public class User {
   @Getter
   private String password;
 
-  public User(String username, String name, LocalDate birthDate, List<Book> books) {
+  public User(String username, String name, LocalDate birthDate, List<Book> books, String password) {
     this.setUsername(username);
     this.setName(name);
     this.setBirthDate(birthDate);
     this.setBooks(books);
+    this.setPassword(password);
   }
 
   public void addBook(Book book) throws BookAlreadyOwnedException {
