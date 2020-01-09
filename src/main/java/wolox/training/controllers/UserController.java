@@ -55,9 +55,14 @@ public class UserController {
     if (user.getId() != id) {
       throw new UserIdMismatchException();
     }
-    userRepository.findById(id)
+    User persistedUser = userRepository.findById(id)
         .orElseThrow(UserNotFoundException::new);
-    return userRepository.save(user);
+
+    persistedUser.setBirthDate(user.getBirthDate());
+    persistedUser.setName(user.getName());
+    persistedUser.setUsername(user.getUsername());
+
+    return userRepository.save(persistedUser);
   }
 
   @PutMapping("/{id}/books/{bookId}")
