@@ -1,5 +1,6 @@
 package wolox.training.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.ApiModel;
@@ -58,6 +59,11 @@ public class User {
   @Setter
   private List<Book> books;
 
+  @Column(length = 60, nullable = false)
+  @JsonIgnore
+  @Getter
+  private String password;
+
   public User(String username, String name, LocalDate birthDate, List<Book> books) {
     this.setUsername(username);
     this.setName(name);
@@ -94,5 +100,9 @@ public class User {
 
   public void setUsername(String username) {
     this.username = Preconditions.checkNotNull(username, PreconditionsConstants.NOT_NULL_MESSAGE, "username");
+  }
+
+  public void setPassword(String password) {
+    this.password = Preconditions.checkNotNull(password, PreconditionsConstants.NOT_NULL_MESSAGE, "password");
   }
 }
