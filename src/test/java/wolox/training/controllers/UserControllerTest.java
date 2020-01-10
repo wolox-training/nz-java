@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -16,13 +17,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import wolox.training.models.Book;
 import wolox.training.models.User;
 import wolox.training.repositories.BookRepository;
@@ -34,7 +40,11 @@ import wolox.training.support.factories.UserFactory;
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = UserController.class)
 @ContextConfiguration(classes = {UserController.class})
+@AutoConfigureMockMvc(addFilters = false)
 public class UserControllerTest {
+
+  @Autowired
+  private WebApplicationContext context;
 
   @Autowired
   MockMvc mvc;
@@ -50,6 +60,7 @@ public class UserControllerTest {
 
   @Before
   public void setUp() {
+
     user = new UserFactory()
         .name("Nicolas Zarewsky")
         .username("nicozare")
@@ -69,6 +80,7 @@ public class UserControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nicozare", password = "1234567890")
   public void whenFindByIdWhichExists_thenUserIsReturned() throws Exception {
     when(mockUserRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
     String url = ("/api/users/1");
@@ -85,6 +97,7 @@ public class UserControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nicozare", password = "1234567890")
   public void whenFindByIdWhichDoesNotExists_thenNoUserIsReturned() throws Exception {
     String url = ("/api/users/1");
     mvc.perform(get(url)
@@ -113,6 +126,7 @@ public class UserControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nicozare", password = "1234567890")
   public void whenDeleteUser_thenUserIsDeleted() throws Exception {
     User simpleUser = new UserFactory().build();
     when(mockUserRepository.findById(1L))
@@ -125,6 +139,7 @@ public class UserControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nicozare", password = "1234567890")
   public void whenDeleteUserNotFound_thenThrow4XXError() throws Exception {
     String url = ("/api/users/1");
     mvc.perform(delete(url)
@@ -134,6 +149,7 @@ public class UserControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nicozare", password = "1234567890")
   public void whenUpdateUser_thenUserIsUpdated() throws Exception {
     when(mockUserRepository.findById(1L))
         .thenReturn(java.util.Optional.ofNullable(user));
@@ -149,6 +165,7 @@ public class UserControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nico", password = "1234567890")
   public void whenAddingANewBook_thenBookIsAddedToUser() throws Exception {
     Book harryPotter2 = new BookFactory()
         .author("J.K. Rowling")
@@ -180,6 +197,7 @@ public class UserControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nico", password = "1234567890")
   public void whenAddingExistingBook_thenExceptionIsThrown() throws Exception {
     when(mockUserRepository.findById(1L))
         .thenReturn(Optional.ofNullable(user));
@@ -195,6 +213,7 @@ public class UserControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nico", password = "1234567890")
   public void whenRemovingBook_thenBookIsRemoved() throws Exception {
     when(mockUserRepository.findById(1L))
         .thenReturn(Optional.ofNullable(user));
@@ -211,6 +230,7 @@ public class UserControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nico", password = "1234567890")
   public void whenRemovingANotPersistedBook_thenExceptionIsThrown() throws Exception {
     when(mockUserRepository.findById(1L))
         .thenReturn(Optional.ofNullable(user));

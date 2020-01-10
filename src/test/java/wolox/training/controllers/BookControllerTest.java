@@ -19,9 +19,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -36,6 +38,7 @@ import wolox.training.support.factories.UserFactory;
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = BookController.class)
 @ContextConfiguration(classes = {BookController.class})
+@AutoConfigureMockMvc(addFilters = false)
 public class BookControllerTest {
   @Autowired
   MockMvc mvc;
@@ -60,6 +63,7 @@ public class BookControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nicozare", password = "1234567890")
   public void whenFindByIdWhichExists_thenBookIsReturned() throws Exception {
     when(mockBookRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(book));
     String url = ("/api/books/1");
@@ -75,6 +79,7 @@ public class BookControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nicozare", password = "1234567890")
   public void whenFindByIdWhichDoesNotExists_thenNoBookIsReturned() throws Exception {
     String url = ("/api/books/1");
     mvc.perform(get(url)
@@ -83,6 +88,7 @@ public class BookControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nicozare", password = "1234567890")
   public void whenFindAll_thenReturnAllBooks() throws Exception {
     Book book_2 = new BookFactory()
         .title("Harry Potter y la camara de los secretos")
@@ -132,6 +138,7 @@ public class BookControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nicozare", password = "1234567890")
   public void whenDeleteBook_thenBookIsDeleted() throws Exception {
     when(mockBookRepository.findById(1L))
         .thenReturn(java.util.Optional.ofNullable(book));
@@ -143,6 +150,7 @@ public class BookControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nicozare", password = "1234567890")
   public void whenDeleteUserNotFound_thenThrow4XXError() throws Exception {
     String url = ("/api/books/1");
     mvc.perform(delete(url)
@@ -152,6 +160,7 @@ public class BookControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "nicozare", password = "1234567890")
   public void whenUpdateBook_thenBookIsUpdated() throws Exception {
     when(mockBookRepository.findById(1L))
         .thenReturn(java.util.Optional.ofNullable(book));

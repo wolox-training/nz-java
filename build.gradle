@@ -36,6 +36,7 @@ dependencies {
 	compile group: 'com.google.guava', name: 'guava', version: '27.0-jre'
 	implementation 'junit:junit:4.12'
 	compile group: 'com.github.javafaker', name: 'javafaker', version: '0.15'
+	testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.0.0.RELEASE'
 }
 
 test {
