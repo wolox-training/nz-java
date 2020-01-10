@@ -17,10 +17,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import wolox.training.constants.PreconditionsConstants;
 import wolox.training.constants.swagger.models.UserConstants;
@@ -31,6 +33,9 @@ import wolox.training.exceptions.BookAlreadyOwnedException;
 @Table(name = "users", schema = "public")
 @NoArgsConstructor
 public class User {
+
+  @Transient
+  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -59,8 +64,7 @@ public class User {
   @Setter
   private List<Book> books;
 
-  @Column(length = 60, nullable = false)
-  @JsonIgnore
+  @Column(nullable = false)
   @Getter
   private String password;
 
@@ -104,6 +108,11 @@ public class User {
   }
 
   public void setPassword(String password) {
-    this.password = Preconditions.checkNotNull(password, PreconditionsConstants.NOT_NULL_MESSAGE, "password");
+    this.password = passwordEncoder.encode(
+        Preconditions.checkNotNull(
+            password,
+            PreconditionsConstants.NOT_NULL_MESSAGE,
+            "password")
+    );
   }
 }

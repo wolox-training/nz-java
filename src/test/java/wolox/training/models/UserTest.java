@@ -1,18 +1,24 @@
 package wolox.training.models;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import wolox.training.config.SecurityConfig;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.repositories.BookRepository;
 import wolox.training.repositories.UserRepository;
@@ -33,9 +39,6 @@ public class UserTest {
   @Autowired
   private BookRepository bookRepository;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
   private User user;
   private Book book1;
   private BookFactory bookFactory = new BookFactory();
@@ -43,8 +46,8 @@ public class UserTest {
 
   @Before
   public void setUp() {
+
     user = userFactory
-        .password(passwordEncoder.encode("1234567890"))
         .build();
     book1 = bookFactory.build();
 
@@ -68,6 +71,7 @@ public class UserTest {
         .isEqualTo(user.getBirthDate());
     assertThat(persistedUser.getBooks().size())
         .isEqualTo(user.getBooks().size());
+    assertThat(persistedUser.getPassword()).isEqualTo(user.getPassword());
   }
 
   @Test(expected = NullPointerException.class)
@@ -87,6 +91,13 @@ public class UserTest {
   public void whenCreateUserWithoutBirthDate_thenThrowException() {
     // when
     user.setBirthDate(null);
+    userRepository.save(user);
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void whenCreateUserWithoutPassword_thenThrowException() {
+    // when
+    user.setPassword(null);
     userRepository.save(user);
   }
 

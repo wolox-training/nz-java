@@ -31,9 +31,6 @@ public class UserController {
   @Autowired
   private BookRepository bookRepository;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
   @GetMapping("/{id}")
   public User findOne(@PathVariable Long id) {
     return userRepository.findById(id)
@@ -43,7 +40,6 @@ public class UserController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public User create(@RequestBody User user) {
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
     return userRepository.save(user);
   }
 
@@ -110,7 +106,7 @@ public class UserController {
     User persistedUser = userRepository.findById(id)
         .orElseThrow(UserNotFoundException::new);
 
-    persistedUser.setPassword(passwordEncoder.encode(user.getPassword()));
+    persistedUser.setPassword(user.getPassword());
 
     return userRepository.save(persistedUser);
 
