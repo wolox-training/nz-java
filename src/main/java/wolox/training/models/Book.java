@@ -30,7 +30,7 @@ public class Book {
   @Column(nullable = false)
   private String image;
 
-  @Column(nullable = false)
+  @Column()
   private String title;
 
   @Column(nullable = false)
@@ -56,6 +56,17 @@ public class Book {
     this.setGenre(genre);
     this.setAuthor(author);
     this.setImage(image);
+    this.setTitle(title);
+    this.setPublisher(publisher);
+    this.setYear(year);
+    this.setPages(pages);
+    this.setIsbn(isbn);
+  }
+
+  public Book(String genre, String author, String title, String publisher,
+      String year, Integer pages, String isbn) {
+    this.setGenre(genre);
+    this.setAuthor(author);
     this.setTitle(title);
     this.setPublisher(publisher);
     this.setYear(year);
@@ -90,7 +101,7 @@ public class Book {
   }
 
   public void setImage(String image) {
-    this.image = Preconditions.checkNotNull(image,PreconditionsConstants.NOT_NULL_MESSAGE, "image");
+    this.image = image;
   }
 
   public String getTitle() {
