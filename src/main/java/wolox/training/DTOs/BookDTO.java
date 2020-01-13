@@ -2,17 +2,19 @@ package wolox.training.DTOs;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import wolox.training.models.Book;
 
 @Data
+@AllArgsConstructor
 public class BookDTO{
     private String isbn;
     private String title;
     private String subtitle;
     private String genre;
     private List<PublisherDTO> publishers;
-    private String publish_date;
+    private String publishDate;
     private String pagination;
     private List<AuthorDTO> authors;
 
@@ -22,7 +24,7 @@ public class BookDTO{
             stringifyList(this.authors),
             this.title,
             stringifyList(this.publishers),
-            this.publish_date,
+            this.publishDate,
             pagesToInt(),
             this.isbn
         );
