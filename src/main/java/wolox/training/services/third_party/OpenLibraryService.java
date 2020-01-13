@@ -12,7 +12,7 @@ import wolox.training.exceptions.BookNotFoundException;
 
 public class OpenLibraryService {
 
-    public BookDTO bookInfo(String isbn) throws JsonProcessingException {
+    public BookDTO bookInfo(String isbn) throws JsonProcessingException, BookNotFoundException {
         RestTemplate restTemplate = new RestTemplate();
         String url = UriComponentsBuilder
             .fromHttpUrl(OpenLibraryConstants.URL)
