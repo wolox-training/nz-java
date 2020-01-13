@@ -1,14 +1,13 @@
 package wolox.training.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class AuthorDTO implements DTO {
-  private String url;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AuthorDTO implements DTO, Serializable {
+  @JsonProperty
   private String name;
-
-
-  public AuthorDTO(String name) {
-    this.setName(name);
-  }
 }

@@ -2,78 +2,49 @@ package wolox.training.DTOs;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.swagger.models.auth.In;
-import java.util.Arrays;
-import java.util.List;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import com.github.javafaker.Faker;
 import org.junit.Before;
 import org.junit.Test;
 import wolox.training.models.Book;
-import wolox.training.support.factories.BookDTOFactory;
-import wolox.training.support.factories.BookFactory;
 
 public class BookDTOTest {
 
     private BookDTO bookDTO;
-    private List<AuthorDTO> author_list;
-    private List<PublisherDTO> publisher_list;
-    private BookDTOFactory bookDTOfactory = new BookDTOFactory();
+    private AuthorDTO[] author_list;
+    private PublisherDTO[] publisher_list;
 
     @Before
     public void setUp() {
-        author_list = Arrays.asList(new AuthorDTO[]{
-            new AuthorDTO("Nicolas Zarewsky"),
-            new AuthorDTO("Rodrigo Francou"),
-            new AuthorDTO("Jimena Rosello")
-        });
+        Faker faker = new Faker();
 
-        publisher_list = Arrays.asList(new PublisherDTO[]{
-            new PublisherDTO("Penguin"),
-            new PublisherDTO("Wales")
-        });
+        AuthorDTO nico = new AuthorDTO();
+        nico.setName("Nicolas Zarewsky");
 
-        bookDTO = bookDTOfactory
-            .pagination("196 p. :")
-            .authors(author_list)
-            .publisers(publisher_list)
-            .build();
-    }
+        AuthorDTO rodri = new AuthorDTO();
+        rodri.setName("Rodrigo Francou");
 
-    @Test
-    public void whenCallingPagesToInt_thenTransformedTheStringPagesToInt()
-        throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-        // when
-        Method method = BookDTO.class.getDeclaredMethod("pagesToInt");
-        method.setAccessible(true);
-        Integer result = (Integer) method.invoke(bookDTO);
+        AuthorDTO jime = new AuthorDTO();
+        jime.setName("Jimena Rosello");
 
-        // then
-        assertThat(result).isEqualTo(196);
-    }
+        author_list = new AuthorDTO[]{ nico, rodri, jime };
 
-    @Test
-    public void whenCallingStringifyListOnAuthors_thenTransformedTheListOfDTOsIntoAString()
-        throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-        // when
-        Method method = BookDTO.class.getDeclaredMethod("stringifyList", List.class);
-        method.setAccessible(true);
-        String result = (String) method.invoke(bookDTO, author_list);
+        PublisherDTO penguin = new PublisherDTO();
+        penguin.setName("Penguin");
 
-        // then
-        assertThat(result).isEqualTo("Nicolas Zarewsky, Rodrigo Francou, Jimena Rosello");
-    }
+        PublisherDTO wales = new PublisherDTO();
+        wales.setName("Wales");
 
-    @Test
-    public void whenCallingStringifyListOnPublishers_thenTransformedTheListOfDTOsIntoAString()
-        throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-        // when
-        Method method = BookDTO.class.getDeclaredMethod("stringifyList", List.class);
-        method.setAccessible(true);
-        String result = (String) method.invoke(bookDTO, publisher_list);
+        publisher_list = new PublisherDTO[]{ penguin, wales };
 
-        // then
-        assertThat(result).isEqualTo("Penguin, Wales");
+        bookDTO = new BookDTO();
+        bookDTO.setAuthors(author_list);
+        bookDTO.setPublishers(publisher_list);
+        bookDTO.setGenre(faker.book().genre());
+        bookDTO.setPublishDate(Integer.toString(faker.number().numberBetween(1900,2020)));
+        bookDTO.setPages(faker.number().numberBetween(100,5000));
+        bookDTO.setTitle(faker.book().title());
+        bookDTO.setSubtitle(faker.book().title());
+        bookDTO.setIsbn(faker.number().digits(10));
     }
 
     @Test
@@ -99,7 +70,7 @@ public class BookDTOTest {
             .isEqualTo(bookDTO.getPublishDate());
 
         assertThat(book.getPages())
-            .isEqualTo(196);
+            .isEqualTo(bookDTO.getPages());
 
         assertThat(book.getIsbn())
             .isEqualTo(bookDTO.getIsbn());

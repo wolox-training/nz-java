@@ -1,5 +1,6 @@
 package wolox.training.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -7,6 +8,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
 import java.util.Map;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,12 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import wolox.training.DTOs.BookDTO;
 import wolox.training.constants.ExceptionsConstants;
 import wolox.training.constants.swagger.controllers.BookControllerConstants;
 import wolox.training.exceptions.BookIdMismatchException;
 import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
+import wolox.training.services.third_party.OpenLibraryService;
 
 @RestController
 @RequestMapping("/api/books")
@@ -33,6 +37,8 @@ public class BookController {
 
   @Autowired
   private BookRepository bookRepository;
+
+  private OpenLibraryService openLibraryService = new OpenLibraryService();
 
   @ApiOperation(value = BookControllerConstants.SHOW_DESCRIPTION, response = Book.class)
   @ApiResponses(value={
@@ -71,5 +77,12 @@ public class BookController {
     bookRepository.findById(id)
         .orElseThrow(BookNotFoundException::new);
     return bookRepository.save(book);
+  }
+
+  @GetMapping("/isbn/{id}")
+  public List<Book> findByIsbn(@PathVariable String id)
+      throws JsonProcessingException, BookNotFoundException {
+    BookDTO bookDTO = openLibraryService.bookInfo(id.toString());
+    return bookRepository.findAll();
   }
 }
