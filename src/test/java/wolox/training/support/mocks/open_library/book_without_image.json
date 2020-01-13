@@ -1,0 +1,125 @@
+{
+  "ISBN:123456789":{
+    "publishers":[
+      {
+        "name":"W. W. Norton"
+      }
+    ],
+    "pagination":"196 p. :",
+    "identifiers":{
+      "lccn":[
+        "2006020903"
+      ],
+      "openlibrary":[
+        "OL17208954M"
+      ],
+      "isbn_13":[
+        "9780393062274"
+      ],
+      "isbn_10":[
+        "0393062279"
+      ],
+      "goodreads":[
+        "168325"
+      ],
+      "librarything":[
+        "1810651"
+      ]
+    },
+    "table_of_contents":[
+      {
+        "title":"Shouldn't leading notes lead?",
+        "label":"",
+        "pagenum":"",
+        "level":0
+      },
+      {
+        "title":"How temperament started",
+        "label":"",
+        "pagenum":"",
+        "level":0
+      },
+      {
+        "title":"Non-keyboard tuning",
+        "label":"",
+        "pagenum":"",
+        "level":0
+      },
+      {
+        "title":"\"How long, O Lord, how long?\"",
+        "label":"",
+        "pagenum":"",
+        "level":0
+      },
+      {
+        "title":"A bridge to the nineteenth century",
+        "label":"",
+        "pagenum":"",
+        "level":0
+      },
+      {
+        "title":"Really better or simply easier?",
+        "label":"",
+        "pagenum":"",
+        "level":0
+      },
+      {
+        "title":"Some are more equal than others",
+        "label":"",
+        "pagenum":"",
+        "level":0
+      },
+      {
+        "title":"The \"Joachim mode\"",
+        "label":"",
+        "pagenum":"",
+        "level":0
+      },
+      {
+        "title":"\"The limbo of that which is disregarded\"",
+        "label":"",
+        "pagenum":"",
+        "level":0
+      },
+      {
+        "title":"Where do we go from here?",
+        "label":"",
+        "pagenum":"",
+        "level":0
+      }
+    ],
+    "title":"How equal temperament ruined harmony (and why you should care)",
+    "url":"https://openlibrary.org/books/OL17208954M/How_equal_temperament_ruined_harmony_(and_why_you_should_care)",
+    "classifications":{
+      "lc_classifications":[
+        "ML3809 .D84 2007"
+      ]
+    },
+    "notes":"Includes bibliographical references (p. 171-175) and index",
+    "number_of_pages":196,
+    "subjects":[
+      {
+        "url":"https://openlibrary.org/subjects/internet_archive_wishlist",
+        "name":"Internet Archive Wishlist"
+      },
+      {
+        "url":"https://openlibrary.org/subjects/musical_temperament",
+        "name":"Musical temperament"
+      }
+    ],
+    "publish_date":"2007",
+    "key":"/books/OL17208954M",
+    "authors":[
+      {
+        "url":"https://openlibrary.org/authors/OL2685023A/Ross_W._Duffin",
+        "name":"Ross W. Duffin"
+      }
+    ],
+    "by_statement":"Ross W. Duffin",
+    "publish_places":[
+      {
+        "name":"New York"
+      }
+    ]
+  }
+}
