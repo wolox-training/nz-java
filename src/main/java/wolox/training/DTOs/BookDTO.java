@@ -1,5 +1,10 @@
 package wolox.training.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -7,32 +12,35 @@ import lombok.Data;
 import wolox.training.models.Book;
 
 @Data
-@AllArgsConstructor
-public class BookDTO{
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class BookDTO implements Serializable {
+    @JsonProperty
     private String isbn;
+    @JsonProperty
     private String title;
+    @JsonProperty
     private String subtitle;
+    @JsonProperty
     private String genre;
-    private List<PublisherDTO> publishers;
+    @JsonProperty
+    private PublisherDTO[] publishers;
+    @JsonProperty("publish_date")
     private String publishDate;
-    private String pagination;
-    private List<AuthorDTO> authors;
+    @JsonProperty("number_of_pages")
+    private int pages;
+    @JsonProperty
+    private AuthorDTO[] authors;
 
     public Book toModel() {
         return new Book(
             this.genre,
-            stringifyList(this.authors),
+            stringifyList(Arrays.asList(this.authors)),
             this.title,
-            stringifyList(this.publishers),
+            stringifyList(Arrays.asList(this.publishers)),
             this.publishDate,
-            pagesToInt(),
+            this.pages,
             this.isbn
         );
-    }
-
-    private Integer pagesToInt() {
-        String[] splited = pagination.split("\\s+");
-        return Integer.parseInt(splited[0]);
     }
 
     private String stringifyList(List<? extends DTO> list) {
