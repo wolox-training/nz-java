@@ -131,8 +131,8 @@ public class BookControllerTest {
     mvc.perform(post(url)
         .contentType(MediaType.APPLICATION_JSON)
         .content("{\"id\":0,\"genre\":\"Fantasia\","
-            + "\"author\":\"J.K. Rowling\",\"image\":null,\"title\":\""
-            + "Harry Potter y la piedra filosofal\",\"publisher\":\"Penguin\",\"year\":"
+            + "\"author\":\"J.K. Rowling\",\"image\":null,\"title\":"
+            + "null,\"publisher\":\"Penguin\",\"year\":"
             + "\"1998\",\"pages\":310,\"isbn\":\"9788700631625\"}"))
         .andExpect(status().is4xxClientError());
   }

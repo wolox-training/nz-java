@@ -72,12 +72,6 @@ public class BookTest {
   }
 
   @Test(expected = NullPointerException.class)
-  public void whenCreateBookWithoutImage_thenThrowException() {
-    book.setImage(null);
-    bookRepository.save(book);
-  }
-
-  @Test(expected = NullPointerException.class)
   public void whenCreateBookWithoutTitle_thenThrowException() {
     book.setTitle(null);
     bookRepository.save(book);
