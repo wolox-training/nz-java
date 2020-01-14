@@ -30,6 +30,7 @@ public class BookDTO implements Serializable {
     private int pages;
     @JsonProperty
     private AuthorDTO[] authors;
+    private String image;
 
     public Book toModel() {
         return new Book(

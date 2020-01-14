@@ -1,6 +1,7 @@
 package wolox.training.services.third_party;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import wolox.training.exceptions.BookNotFoundException;
 @Component
 public class OpenLibraryService {
 
+    private static final String DEFAULT_IMAGE = "IMAGE NOT AVAILABLE";
     @Value("${openlibrary.url}")
     private String base_url;
 
@@ -28,7 +30,7 @@ public class OpenLibraryService {
             .toUriString();
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        if (response.getStatusCode() == HttpStatus.NOT_FOUND)
+        if (response.getStatusCode() == HttpStatus.NOT_FOUND || !response.hasBody())
             throw new BookNotFoundException();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -38,6 +40,23 @@ public class OpenLibraryService {
                     .path("ISBN:" + isbn),
                 BookDTO.class);
         bookDTO.setIsbn(isbn);
+        bookDTO.setImage(
+            getImage(objectMapper, response, isbn)
+        );
         return bookDTO;
+    }
+
+    private String getImage(ObjectMapper objectMapper, ResponseEntity<String> response, String isbn)
+        throws JsonProcessingException {
+        try {
+            return objectMapper
+                .readTree(response.getBody())
+                .path("ISBN:" + isbn)
+                .path("cover")
+                .get("small")
+                .asText();
+        } catch (NullPointerException e) {
+            return DEFAULT_IMAGE;
+        }
     }
 }

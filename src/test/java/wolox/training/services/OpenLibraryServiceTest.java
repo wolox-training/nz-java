@@ -63,7 +63,45 @@ public class OpenLibraryServiceTest {
         assertThat(bookDTO.getAuthors().length).isEqualTo(1);
         assertThat(bookDTO.getAuthors()[0].getName()).isEqualTo("Ross W. Duffin");
 
+        assertThat(bookDTO.getImage()).isEqualTo("IMAGE NOT AVAILABLE");
 
     }
+
+  @Test
+  public void whenCallingBookInfoWithImage_andTheBookExist_thenReturnTheBookDTOAsociated()
+      throws IOException {
+    stubFor(
+        get(urlEqualTo("/api/books?bibkeys=ISBN:123456789&format=json&jscmd=data"))
+            .willReturn(aResponse()
+                .withStatus(200).withHeader("Content-Type", "application/json")
+                .withBody(
+                    new String(
+                        Files.readAllBytes(
+                            Paths.get("./src/test/java/wolox/training"
+                                + "/support/mocks/open_library/book_with_image.json")
+                        )
+                    )
+                )
+            )
+    );
+
+    BookDTO bookDTO = openLibraryService.bookInfo("123456789");
+
+    assertThat(bookDTO.getTitle())
+        .isEqualTo("Zen speaks");
+    assertThat(bookDTO.getGenre()).isBlank();
+    assertThat(bookDTO.getIsbn()).isEqualTo("123456789");
+    assertThat(bookDTO.getPages()).isEqualTo(159);
+    assertThat(bookDTO.getPublishDate()).isEqualTo("1994");
+    assertThat(bookDTO.getSubtitle()).isEqualTo("shouts of nothingness");
+
+    assertThat(bookDTO.getPublishers().length).isEqualTo(1);
+    assertThat(bookDTO.getPublishers()[0].getName()).isEqualTo("Anchor Books");
+
+    assertThat(bookDTO.getAuthors().length).isEqualTo(1);
+    assertThat(bookDTO.getAuthors()[0].getName()).isEqualTo("Zhizhong Cai");
+
+    assertThat(bookDTO.getImage()).isEqualTo("https://covers.openlibrary.org/b/id/240726-S.jpg");
+  }
 
 }
