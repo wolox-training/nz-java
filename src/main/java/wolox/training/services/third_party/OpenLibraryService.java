@@ -7,17 +7,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import wolox.training.DTOs.BookDTO;
 import wolox.training.exceptions.BookNotFoundException;
 
-@Resource
 public class OpenLibraryService {
 
     @Value("${openlibrary.url}")
-    public String base_url;
+    private String base_url;
 
     public BookDTO bookInfo(String isbn) throws JsonProcessingException, BookNotFoundException {
         RestTemplate restTemplate = new RestTemplate();
