@@ -8,10 +8,17 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import wolox.training.DTOs.BookDTO;
-import wolox.training.constants.services.OpenLibraryConstants;
 import wolox.training.services.third_party.OpenLibraryService;
 
+@RunWith(SpringRunner.class)
+@ContextConfiguration(initializers = ConfigFileApplicationContextInitializer.class)
+@ActiveProfiles("test")
 public class OpenLibraryServiceTest {
 
     private OpenLibraryService openLibraryService = new OpenLibraryService();
