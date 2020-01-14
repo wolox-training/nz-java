@@ -30,10 +30,10 @@ public class OpenLibraryService {
             .toUriString();
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        if (response.getStatusCode() == HttpStatus.NOT_FOUND || !response.hasBody())
-            throw new BookNotFoundException();
-
         ObjectMapper objectMapper = new ObjectMapper();
+
+        checkValidResponse(objectMapper, response);
+
         BookDTO bookDTO =  objectMapper.convertValue(
                 objectMapper
                     .readTree(response.getBody())
@@ -44,6 +44,13 @@ public class OpenLibraryService {
             getImage(objectMapper, response, isbn)
         );
         return bookDTO;
+    }
+
+    private void checkValidResponse(ObjectMapper objectMapper, ResponseEntity<String> response)
+        throws JsonProcessingException, BookNotFoundException {
+        if (response.getStatusCode() == HttpStatus.NOT_FOUND ||
+            objectMapper.readTree(response.getBody()).size() == 0)
+            throw new BookNotFoundException();
     }
 
     private String getImage(ObjectMapper objectMapper, ResponseEntity<String> response, String isbn)
