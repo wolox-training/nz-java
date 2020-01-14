@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,14 +18,16 @@ import wolox.training.DTOs.BookDTO;
 import wolox.training.services.third_party.OpenLibraryService;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(initializers = ConfigFileApplicationContextInitializer.class)
+@ContextConfiguration(initializers = ConfigFileApplicationContextInitializer.class,
+    classes = { OpenLibraryService.class })
 @ActiveProfiles("test")
 public class OpenLibraryServiceTest {
 
-    private OpenLibraryService openLibraryService = new OpenLibraryService();
+    @Autowired
+    OpenLibraryService openLibraryService;
 
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(433);
+    public WireMockRule wireMockRule = new WireMockRule(8089);
 
     @Test
     public void whenCallingBookInfo_andTheBookExist_thenReturnTheBookDTOAsociated()
@@ -48,6 +51,18 @@ public class OpenLibraryServiceTest {
 
         assertThat(bookDTO.getTitle())
             .isEqualTo("How equal temperament ruined harmony (and why you should care)");
+        assertThat(bookDTO.getGenre()).isBlank();
+        assertThat(bookDTO.getIsbn()).isEqualTo("123456789");
+        assertThat(bookDTO.getPages()).isEqualTo(196);
+        assertThat(bookDTO.getPublishDate()).isEqualTo("2007");
+        assertThat(bookDTO.getSubtitle()).isBlank();
+
+        assertThat(bookDTO.getPublishers().length).isEqualTo(1);
+        assertThat(bookDTO.getPublishers()[0].getName()).isEqualTo("W. W. Norton");
+
+        assertThat(bookDTO.getAuthors().length).isEqualTo(1);
+        assertThat(bookDTO.getAuthors()[0].getName()).isEqualTo("Ross W. Duffin");
+
 
     }
 

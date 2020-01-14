@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,10 +37,14 @@ import wolox.training.services.third_party.OpenLibraryService;
 @Api
 public class BookController {
 
+  @Value("${openlibrary.url}")
+  private String base_url;
+
   @Autowired
   private BookRepository bookRepository;
 
-  private OpenLibraryService openLibraryService = new OpenLibraryService();
+  @Autowired
+  private OpenLibraryService openLibraryService;
 
   @ApiOperation(value = BookControllerConstants.SHOW_DESCRIPTION, response = Book.class)
   @ApiResponses(value={
