@@ -15,6 +15,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import wolox.training.DTOs.BookDTO;
+import wolox.training.exceptions.BookAlreadyOwnedException;
+import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.services.third_party.OpenLibraryService;
 
 @RunWith(SpringRunner.class)
@@ -104,4 +106,17 @@ public class OpenLibraryServiceTest {
     assertThat(bookDTO.getImage()).isEqualTo("https://covers.openlibrary.org/b/id/240726-S.jpg");
   }
 
+  @Test(expected = BookNotFoundException.class)
+  public void whenCallingBookInfoW_andTheBookDoesNotExists_thenThrowError()
+      throws IOException {
+    stubFor(
+        get(urlEqualTo("/api/books?bibkeys=ISBN:123456789&format=json&jscmd=data"))
+            .willReturn(aResponse()
+                .withStatus(200).withHeader("Content-Type", "application/json")
+                .withBody("{}")
+            )
+    );
+
+    BookDTO bookDTO = openLibraryService.bookInfo("123456789");
+  }
 }
