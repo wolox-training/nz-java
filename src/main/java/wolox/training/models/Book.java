@@ -31,7 +31,7 @@ public class Book {
   @Getter
   private String image;
 
-  @Column()
+  @Column(nullable = false)
   private String title;
 
   @Column(nullable = false)
