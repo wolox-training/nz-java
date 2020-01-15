@@ -2,6 +2,8 @@ package wolox.training.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -65,6 +67,7 @@ public class User {
   private List<Book> books;
 
   @Column(nullable = false)
+  @JsonProperty(access = Access.WRITE_ONLY)
   @Getter
   private String password;
 
