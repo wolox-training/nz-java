@@ -1,5 +1,6 @@
 package wolox.training.controllers;
 
+import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -11,16 +12,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
@@ -54,6 +60,9 @@ public class UserControllerTest {
 
   @MockBean
   BookRepository mockBookRepository;
+
+  @Mock
+  private Principal principal;
 
   private User user;
   private Book book;
@@ -241,5 +250,26 @@ public class UserControllerTest {
 
     mvc.perform(delete(url).contentType(MediaType.APPLICATION_JSON)).andDo(print())
         .andExpect(status().is4xxClientError());
+  }
+
+  @Test
+  @WithMockUser(username = "nico", password = "1234567890")
+  public void whenFetchingCurrentUser_thenCurrentUserIsResturned() throws Exception {
+    when(principal.getName()).thenReturn(user.getUsername());
+    when(mockUserRepository.findByUsername("nicozare")).thenReturn(
+        Optional.ofNullable(user));
+
+    String url = ("/api/users/current_user");
+
+    mvc.perform(get(url)
+        .principal(principal)
+        .contentType(MediaType.APPLICATION_JSON)).andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().json("{\"id\": 0,\"name\": \"Nicolas Zarewsky\","
+            + " \"username\": \"nicozare\", "
+            + "\"birthDate\": \"1995-01-30\",\"books\":[{\"id\":0,\"genre\":\"Fantasia\","
+            + "\"author\":\"J.K. Rowling\",\"image\":\"shorturl.at/aCFR8\",\"title\":\""
+            + "Harry Potter y la piedra filosofal\",\"publisher\":\"Penguin\",\"year\":"
+            + "\"1998\",\"pages\":310,\"isbn\":\"9788700631625\"}]}"));
   }
 }
