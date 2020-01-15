@@ -2,6 +2,7 @@ package wolox.training.services;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import java.io.IOException;
 import java.nio.file.Files;
