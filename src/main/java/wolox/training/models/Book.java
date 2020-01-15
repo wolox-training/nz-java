@@ -28,6 +28,7 @@ public class Book {
   private String author;
 
   @Column(nullable = false)
+  @Getter
   private String image;
 
   @Column()
@@ -64,7 +65,7 @@ public class Book {
   }
 
   public Book(String genre, String author, String title, String publisher,
-      String year, Integer pages, String isbn) {
+      String year, Integer pages, String isbn, String image) {
     this.setGenre(genre);
     this.setAuthor(author);
     this.setTitle(title);
@@ -72,6 +73,7 @@ public class Book {
     this.setYear(year);
     this.setPages(pages);
     this.setIsbn(isbn);
+    this.setImage(image);
   }
 
   public Book(){};
@@ -94,14 +96,6 @@ public class Book {
 
   public void setAuthor(String author) {
     this.author = Preconditions.checkNotNull(author,PreconditionsConstants.NOT_NULL_MESSAGE, "author");
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
   }
 
   public String getTitle() {
@@ -142,5 +136,9 @@ public class Book {
 
   public void setIsbn(String isbn) {
     this.isbn = Preconditions.checkNotNull(isbn,PreconditionsConstants.NOT_NULL_MESSAGE, "isbn");
+  }
+
+  public void setImage(String image) {
+    this.image = Preconditions.checkNotNull(image,PreconditionsConstants.NOT_NULL_MESSAGE, "image");
   }
 }

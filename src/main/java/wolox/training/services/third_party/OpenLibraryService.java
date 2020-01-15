@@ -13,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import wolox.training.DTOs.BookDTO;
 import wolox.training.exceptions.BookNotFoundException;
 
-@Component
+@Service
 public class OpenLibraryService {
 
     private static final String DEFAULT_IMAGE = "IMAGE NOT AVAILABLE";

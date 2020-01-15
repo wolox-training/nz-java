@@ -78,6 +78,12 @@ public class BookTest {
   }
 
   @Test(expected = NullPointerException.class)
+  public void whenCreateBookWithoutImage_thenThrowException() {
+    book.setImage(null);
+    bookRepository.save(book);
+  }
+
+  @Test(expected = NullPointerException.class)
   public void whenCreateBookWithoutPublisher_thenThrowException() {
     book.setPublisher(null);
     bookRepository.save(book);

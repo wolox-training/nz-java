@@ -40,7 +40,8 @@ public class BookDTO implements Serializable {
             stringifyList(Arrays.asList(this.publishers)),
             this.publishDate,
             this.pages,
-            this.isbn
+            this.isbn,
+            this.image
         );
     }
 
