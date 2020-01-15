@@ -8,11 +8,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -85,10 +87,18 @@ public class BookController {
     return bookRepository.save(book);
   }
 
-  @GetMapping("/isbn/{id}")
-  public List<Book> findByIsbn(@PathVariable String id)
+  @GetMapping("/isbn/{isbn_number}")
+  public ResponseEntity<Book> findByIsbn(@PathVariable String isbn_number)
       throws JsonProcessingException, BookNotFoundException {
-    BookDTO bookDTO = openLibraryService.bookInfo(id.toString());
-    return bookRepository.findAll();
+    Optional<Book> book = bookRepository.findByIsbn(isbn_number);
+    if(book.isPresent()){
+      return new ResponseEntity<Book>(book.get(), HttpStatus.OK);
+    } else {
+      Book new_book = bookRepository.save(
+          openLibraryService.bookInfo(isbn_number)
+                            .toModel()
+      );
+      return new ResponseEntity<Book>(new_book, HttpStatus.CREATED);
+    }
   }
 }

@@ -31,13 +31,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import wolox.training.models.Book;
 import wolox.training.models.User;
 import wolox.training.repositories.BookRepository;
+import wolox.training.services.third_party.OpenLibraryService;
 import wolox.training.support.factories.BookFactory;
 import wolox.training.support.factories.UserFactory;
 
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = BookController.class)
-@ContextConfiguration(classes = {BookController.class})
+@ContextConfiguration(classes = {BookController.class, OpenLibraryService.class})
 @AutoConfigureMockMvc(addFilters = false)
 public class BookControllerTest {
   @Autowired

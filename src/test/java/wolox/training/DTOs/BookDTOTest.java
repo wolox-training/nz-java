@@ -45,6 +45,7 @@ public class BookDTOTest {
         bookDTO.setTitle(faker.book().title());
         bookDTO.setSubtitle(faker.book().title());
         bookDTO.setIsbn(faker.number().digits(10));
+        bookDTO.setImage("pepe");
     }
 
     @Test
@@ -58,7 +59,7 @@ public class BookDTOTest {
         assertThat(book.getAuthor())
             .isEqualTo("Nicolas Zarewsky, Rodrigo Francou, Jimena Rosello");
 
-        assertThat(book.getImage()).isBlank();
+        assertThat(book.getImage()).isEqualTo(bookDTO.getImage());
 
         assertThat(book.getTitle())
             .isEqualTo(bookDTO.getTitle());
