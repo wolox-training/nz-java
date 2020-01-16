@@ -101,4 +101,12 @@ public class BookController {
       return new ResponseEntity<Book>(new_book, HttpStatus.CREATED);
     }
   }
+
+  @GetMapping("/advance_search")
+  public List<Book> findByALot(
+      @RequestParam String genre,
+      @RequestParam String publisher,
+      @RequestParam String year) {
+    return bookRepository.findByPublisherAndGenreAndYear(genre, publisher, year);
+  }
 }
