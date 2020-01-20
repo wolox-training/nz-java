@@ -2,45 +2,40 @@ package wolox.training.repositories;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
-import java.util.List;
-import javax.transaction.Transactional;
+import com.github.database.rider.core.api.configuration.DBUnit;
+import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.spring.api.DBRider;
+import javax.annotation.Resource;
+import org.dbunit.database.DatabaseConfig;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.junit4.SpringRunner;
-import wolox.training.models.Book;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = NONE)
-@Transactional
+@SpringBootTest
+@DBRider
+@DBUnit(caseSensitiveTableNames = true, escapePattern = "\"?\"" )
 public class BookRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;
 
-    @Autowired
-    private TestEntityManager entityManager;
-
     @Before
-    public void setUp() {
-        entityManager.flush();
-    }
+    public void setUp() {};
 
     @Test
-    void whenInitializedByDbUnit_thenFindByPublisherAndGenreAndYear() {
-        List<Book> books = bookRepository.findAll();
-        //List<Book> books = bookRepository.findByPublisherAndGenreAndYear(
-        //    "Penguin",
-        //    "Fantasia",
-        //    "2000");
-        assertThat(books.size()).isEqualTo(1);
+    @DataSet("books.yml")
+    public void whenInitializedByDbUnit_thenFindByPublisherAndGenreAndYear() {
+        assertThat(bookRepository.count()).isEqualTo(4);
     }
 
 }
