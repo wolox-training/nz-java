@@ -1,0 +1,16 @@
+users:
+  - id: 517
+    birth_date: "1995-01-30"
+    name: "Nicolas"
+    username: "nicozare"
+    password: "$2a$10$WmEuviPW2SydrJBRjR3gb.kcIDJV69YkGuY2ZhDkEE91Vybek2RnW"
+  - id: 1
+    birth_date: "1995-01-10"
+    name: "Pepe"
+    username: "pepe1"
+    password: "$2a$10$WmEuviPW2SydrJBRjR3gb.kcIDJV69YkGuY2ZhDkEE91Vybek2RnW"
+  - id: 2
+    birth_date: "1995-01-20"
+    name: "Marcelo"
+    username: "marcelo1"
+    password: "$2a$10$WmEuviPW2SydrJBRjR3gb.kcIDJV69YkGuY2ZhDkEE91Vybek2RnW"
