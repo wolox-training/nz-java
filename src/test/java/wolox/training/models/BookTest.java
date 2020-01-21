@@ -138,7 +138,8 @@ public class BookTest {
     entityManager.flush();
 
     // when
-    List<Book> found = bookRepository.findAll();
+    List<Book> found = bookRepository.findAll(null,
+        null, null, null, null, null, null, null);
 
     // then
     assertThat(found, hasItems(book, book_2, book_3));

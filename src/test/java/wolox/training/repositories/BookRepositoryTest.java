@@ -44,4 +44,14 @@ public class BookRepositoryTest {
         assertThat(bookList.size()).isEqualTo(4);
     }
 
+    @Test
+    @DataSet("books.yml")
+    public void whenInitializedByDbUnit_thenFindAll_withSomeParams() {
+        List<Book> bookList = bookRepository
+            .findAll(null,
+                null, "2002", null, null, null, null, null);
+        assertThat(bookList.size()).isEqualTo(1);
+        assertThat(bookList.get(0).getTitle()).isEqualTo("La Torre Oscura");
+    }
+
 }

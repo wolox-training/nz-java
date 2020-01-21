@@ -61,7 +61,16 @@ public class BookController {
 
   @GetMapping()
   public List<Book> allBooks(@RequestParam Map<String,String> allParam) {
-    return bookRepository.findAll();
+    return bookRepository.findAll(
+        allParam.get("publisher"),
+        allParam.get("genre"),
+        allParam.get("year"),
+        allParam.get("author"),
+        allParam.get("image"),
+        allParam.get("title"),
+        (allParam.get("pages") == null) ? null : Integer.parseInt(allParam.get("pages")),
+        allParam.get("isbn")
+    );
   }
 
   @PostMapping
