@@ -36,4 +36,14 @@ public class UserRepositoryTest {
     assertThat(userList.get(0).getName()).isEqualTo("Pepe");
   }
 
+  @Test
+  @DataSet("users.yml")
+  public void whenInitializedByDbUnit_andNameIsNull_thenFindByBirthDateBetweenAndNameContainingIgnoreCase() {
+    List<User> userList = userRepository
+        .findByBirthDateBetweenAndNameContainingIgnoreCase(
+            LocalDate.of(1995,01,01),
+            LocalDate.of(1995,01,30),null);
+    assertThat(userList.size()).isEqualTo(3);
+  }
+
 }

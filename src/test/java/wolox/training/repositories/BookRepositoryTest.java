@@ -36,4 +36,12 @@ public class BookRepositoryTest {
         assertThat(bookList.get(1).getTitle()).isEqualTo("Misery");
     }
 
+    @Test
+    @DataSet("books.yml")
+    public void whenInitializedByDbUnit_andYearNull_thenFindByPublisherAndGenreAndYear() {
+        List<Book> bookList = bookRepository
+            .findByPublisherAndGenreAndYear("Penguin", "Fantasia",null);
+        assertThat(bookList.size()).isEqualTo(4);
+    }
+
 }
