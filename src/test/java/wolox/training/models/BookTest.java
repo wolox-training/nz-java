@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import wolox.training.repositories.BookRepository;
 import wolox.training.support.factories.BookFactory;
@@ -138,11 +140,12 @@ public class BookTest {
     entityManager.flush();
 
     // when
-    List<Book> found = bookRepository.findAll(null,
-        null, null, null, null, null, null, null);
+    Page<Book> found = bookRepository.findAll(null,
+        null, null, null, null, null, null,
+        null, PageRequest.of(0,10));
 
     // then
-    assertThat(found, hasItems(book, book_2, book_3));
+    assertThat(found.getContent(), hasItems(book, book_2, book_3));
   }
 
 }

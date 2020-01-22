@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,6 +14,9 @@ import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -60,8 +64,10 @@ public class BookController {
   }
 
   @GetMapping()
-  public List<Book> allBooks(@RequestParam Map<String,String> allParam) {
-    return bookRepository.findAll(
+  public Page<Book> allBooks(@RequestParam Map<String,String> allParam) {
+    Integer page = (allParam.get("page") == null) ? 0 : Integer.parseInt(allParam.get("page"));
+    String order = (allParam.get("order") == null) ? "id" :  allParam.get("order");
+    return (Page<Book>) bookRepository.findAll(
         allParam.get("publisher"),
         allParam.get("genre"),
         allParam.get("year"),
@@ -69,7 +75,12 @@ public class BookController {
         allParam.get("image"),
         allParam.get("title"),
         (allParam.get("pages") == null) ? null : Integer.parseInt(allParam.get("pages")),
-        allParam.get("isbn")
+        allParam.get("isbn"),
+        PageRequest.of(
+            page,
+            2,
+            Sort.by(order).ascending()
+        )
     );
   }
 
@@ -112,10 +123,21 @@ public class BookController {
   }
 
   @GetMapping("/advance_search")
-  public List<Book> findByALot(
+  public Page<Book> findByALot(
       @RequestParam String genre,
       @RequestParam String publisher,
-      @RequestParam String year) {
-    return bookRepository.findByPublisherAndGenreAndYear(genre, publisher, year);
+      @RequestParam String year,
+      @RequestParam Map<String,String> allParam) {
+    Integer page = (allParam.get("page") == null) ? 0 : Integer.parseInt(allParam.get("page"));
+    String order = (allParam.get("order") == null) ? "id" :  allParam.get("order");
+
+    return bookRepository.findByPublisherAndGenreAndYear(
+        genre,
+        publisher,
+        year,
+        PageRequest.of(
+            page,
+            2,
+            Sort.by(order).ascending()));
   }
 }
