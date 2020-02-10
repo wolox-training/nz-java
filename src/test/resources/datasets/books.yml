@@ -35,3 +35,12 @@ book:
     pages: 6060
     publisher: "Penguin"
     year: "2000"
+  - id: 5
+    author: "Stephen King"
+    title: "La Torre Oscura"
+    genre: "Drama"
+    image: "shorturl.at/aCFR8"
+    isbn: "9788700631627"
+    pages: 6060
+    publisher: "Penguin"
+    year: "2002"
