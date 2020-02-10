@@ -1,0 +1,46 @@
+book:
+  - id: 1
+    author: "J.K. Rowling"
+    title: "Harry Potter y la piedra filosofal"
+    genre: "Fantasia"
+    image: "shorturl.at/aCFR8"
+    isbn: "9788700631625"
+    pages: 310
+    publisher: "Penguin"
+    year: "1998"
+  - id: 2
+    author: "J.K. Rowling"
+    title: "Harry Potter y la camara de los secretos"
+    genre: "Fantasia"
+    image: "shorturl.at/aCFR8"
+    isbn: "9788700631626"
+    pages: 420
+    publisher: "Penguin"
+    year: "1999"
+  - id: 3
+    author: "J.K. Rowling"
+    title: "Harry Potter y el prisionero de Azkaban"
+    genre: "Fantasia"
+    image: "shorturl.at/aCFR8"
+    isbn: "9788700631627"
+    pages: 530
+    publisher: "Penguin"
+    year: "2000"
+  - id: 4
+    author: "Stephen King"
+    title: "Misery"
+    genre: "Fantasia"
+    image: "shorturl.at/aCFR8"
+    isbn: "9788700631627"
+    pages: 6060
+    publisher: "Penguin"
+    year: "2000"
+  - id: 5
+    author: "Stephen King"
+    title: "La Torre Oscura"
+    genre: "Drama"
+    image: "shorturl.at/aCFR8"
+    isbn: "9788700631627"
+    pages: 6060
+    publisher: "Penguin"
+    year: "2002"

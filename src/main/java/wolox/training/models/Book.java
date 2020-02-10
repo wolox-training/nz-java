@@ -1,10 +1,18 @@
 package wolox.training.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.google.common.base.Preconditions;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
+import wolox.training.constants.PreconditionsConstants;
 
 @Entity
 public class Book {
@@ -20,6 +28,7 @@ public class Book {
   private String author;
 
   @Column(nullable = false)
+  @Getter
   private String image;
 
   @Column(nullable = false)
@@ -37,8 +46,37 @@ public class Book {
   @Column(nullable = false)
   private String isbn;
 
-  public Book() {
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "users_id")
+  @JsonBackReference
+  @Getter @Setter
+  private User users;
+
+  public Book(String genre, String author, String image, String title, String publisher,
+      String year, Integer pages, String isbn) {
+    this.setGenre(genre);
+    this.setAuthor(author);
+    this.setImage(image);
+    this.setTitle(title);
+    this.setPublisher(publisher);
+    this.setYear(year);
+    this.setPages(pages);
+    this.setIsbn(isbn);
   }
+
+  public Book(String genre, String author, String title, String publisher,
+      String year, Integer pages, String isbn, String image) {
+    this.setGenre(genre);
+    this.setAuthor(author);
+    this.setTitle(title);
+    this.setPublisher(publisher);
+    this.setYear(year);
+    this.setPages(pages);
+    this.setIsbn(isbn);
+    this.setImage(image);
+  }
+
+  public Book(){};
 
   public long getId() {
     return id;
@@ -57,15 +95,7 @@ public class Book {
   }
 
   public void setAuthor(String author) {
-    this.author = author;
-  }
-
-  public String getImage() {
-    return image;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
+    this.author = Preconditions.checkNotNull(author,PreconditionsConstants.NOT_NULL_MESSAGE, "author");
   }
 
   public String getTitle() {
@@ -73,7 +103,7 @@ public class Book {
   }
 
   public void setTitle(String title) {
-    this.title = title;
+    this.title = Preconditions.checkNotNull(title,PreconditionsConstants.NOT_NULL_MESSAGE, "title");
   }
 
   public String getPublisher() {
@@ -81,7 +111,7 @@ public class Book {
   }
 
   public void setPublisher(String publisher) {
-    this.publisher = publisher;
+    this.publisher = Preconditions.checkNotNull(publisher,PreconditionsConstants.NOT_NULL_MESSAGE, "publisher");
   }
 
   public String getYear() {
@@ -89,7 +119,7 @@ public class Book {
   }
 
   public void setYear(String year) {
-    this.year = year;
+    this.year = Preconditions.checkNotNull(year,PreconditionsConstants.NOT_NULL_MESSAGE, "year");
   }
 
   public Integer getPages() {
@@ -97,7 +127,7 @@ public class Book {
   }
 
   public void setPages(Integer pages) {
-    this.pages = pages;
+    this.pages = Preconditions.checkNotNull(pages,PreconditionsConstants.NOT_NULL_MESSAGE, "pages");
   }
 
   public String getIsbn() {
@@ -105,6 +135,10 @@ public class Book {
   }
 
   public void setIsbn(String isbn) {
-    this.isbn = isbn;
+    this.isbn = Preconditions.checkNotNull(isbn,PreconditionsConstants.NOT_NULL_MESSAGE, "isbn");
+  }
+
+  public void setImage(String image) {
+    this.image = Preconditions.checkNotNull(image,PreconditionsConstants.NOT_NULL_MESSAGE, "image");
   }
 }
